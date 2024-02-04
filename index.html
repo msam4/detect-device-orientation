@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detect Device Orientation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <button class="hide" id="Check" onclick="orientationChange()">Check Orientation</button>
+    <p id="status"></p>
+  </div>
+  <script>
+    // Check Initial References
+    const statusRef = document.getElementById("status");
+    const checkOrientationButton = document.getElementById("check");
+
+    // Create the query
+    const portraitMediaQuery = window.matchMedia("(orientation:portrait)");
+
+    // Define a callback function for the event listener (For safari/ios since they don't support screen orientation)
+    const mediaOrientationChange = (mediaQuery) => {
+      if (mediaQuery.matches) {
+        statusRef.innerText = `Landscape`;
+      } else {
+        statusRef.innerText = `Portrait`;
+      };
+    };
+
+    // Onchange event would be trigged whenever the orientation changes
+    window.screen.orientation.onchange = orientationChange = () => {
+      if (screen.orientation.type.includes("landscape")) {
+      statusRef.innerText = `Landscape`;
+    } else {
+      statusRef.innerText = `Portrait`;
+    };
+    }
+
+    // In Firefox, it doesn't get fired hence we add buttons to manually display the changed orientation
+    window.onload = () => {
+      statusRef.innerText = "";
+      checkOrientationButton.classList.add("hide");
+      if ("mozOrientation" in screen) {
+        //For firefox
+        //Since we had issues with onchange on firefox the button would simply call the function which we call on change
+        checkOrientationButton.classList.remove("hide");
+      } else if ("orientation" in screen) {
+        //Supported Browsers
+        orientationChange();
+      } else {
+        // For safari
+        mediaOrientationChange(portraitMediaQuery);
+        portraitMediaQuery.addEventListener("change", mediaOrientationChange);
+      }
+    };
+  </script>
+</body>
+</html>
