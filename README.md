@@ -1,4 +1,6 @@
 # Detect Device Orientation
+<strong>⚠️ Works only on mobile devices ⚠️</strong>
+<br>
 A simple webpage which can detect if the mobile device is being viewed landscape or portrait.
 
 ## Getting Started
